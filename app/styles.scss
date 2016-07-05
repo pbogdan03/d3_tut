@@ -1,0 +1,54 @@
+html,
+body {
+	height: 100%;
+	width: 100%;
+}
+
+h2 {
+	background: #eee;
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 24px;
+	font-weight: lighter;
+	text-align: center;
+}
+
+.container {
+	width: 100%;
+	height: 100%;
+}
+
+.standard-bar {
+	display: inline-block;
+	//width: 20px;
+}
+
+.axis {
+	path, 
+	line {
+		fill: none;
+		stroke: black;
+		shape-rendering: crispEdges;
+	}
+
+	text {
+		font-family: Helvetica, Arial, sans-serif;
+		font-size: 15px;
+	}
+}
+
+button {
+	border: 2px solid #333;
+    background: transparent;
+    border-radius: 0;
+    padding: 10px;
+    font-family: Helvetica, arial, sans-serif;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.svg-bar--addOne {
+	margin-left: 10px;
+}
+.svg-bar--removeOne {
+	margin-left: 10px;
+}
