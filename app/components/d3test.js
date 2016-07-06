@@ -19,10 +19,11 @@ const valueRange = 200;
 // DATASETS
 const dataset1D = data.create1DData(20, valueRange);
 const dataset2D = data.create2DData(20, valueRange, valueRange);
+const customData = data.customScatterData(20);
 
 // CHARTS
 svgBar(dataset1D, opts);
 canvasTest();
 htmlBar(dataset1D, opts);
 svgCircle(dataset1D, opts);
-scatterPlot(dataset2D, opts);
+scatterPlot(customData, opts);

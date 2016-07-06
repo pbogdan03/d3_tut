@@ -31,13 +31,28 @@ function scatterPlot(dataset, opts) {
 
 	let xAxis = d3.svg.axis()
 					  .scale(xScale)
-					  .orient('bottom')
-					  .ticks(5);
+					  .orient('bottom');
+					  //.ticks(5);
 	let yAxis = d3.svg.axis()
 					  .scale(yScale)
-					  .orient('left')
-					  .ticks(5);
+					  .orient('left');
+					  // .ticks(5);
 	//xAxis.tickFormat(d3.format(".1%")); //display axis text as 0.0%
+
+	let valueLine = d3.svg.line()
+						.x((d) => xScale(d[0]))
+						.y((d) => yScale(d[1]))
+						.interpolate('monotone');
+
+	// path for 
+	svgScatter.append('path')
+		.attr({
+			'class': 'line',
+			'd': valueLine(dataset),
+			'fill': 'none',
+			'stroke': 'rgb(198, 100, 100)',
+			'stroke-width': 2
+		});
 
 	svgScatter.append('g')
 		.attr({
@@ -51,7 +66,7 @@ function scatterPlot(dataset, opts) {
 		.attr({
 			'cx': (d) => xScale(d[0]),
 			'cy': (d) => yScale(d[1]),
-			'r': (d) => rScale(d[1])
+			'r': 3
 		});
 
 	svgScatter.append('clipPath')

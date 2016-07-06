@@ -29,8 +29,17 @@ function create2DDataset(numValues, xRange, yRange) {
 	return data;
 }
 
+function customScatterData(numValues) {
+	let data = [];
+	for(let i = 0; i <= numValues; i++) {
+		data.push([i, Math.pow(i, 2)]);
+	}
+	return data;
+}
+
 module.exports = {
 	create1DData: create1DDataset,
 	create2DData: create2DDataset,
+	customScatterData: customScatterData,
 	update1DData: update1DDataset
 };
