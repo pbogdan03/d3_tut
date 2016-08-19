@@ -62,7 +62,6 @@ function svgBar(dataset, opts) {
 		.on('click', () => {
 			// settings
 			dataset = data.update1DData(dataset);
-			console.log(dataset);
 
 			// update chart to fit in the svg total height
 			// update color to fit in 255
@@ -97,7 +96,6 @@ function svgBar(dataset, opts) {
 		.on('click', () => {
 			let newNumber = Math.floor(Math.random() * d3.max(dataset, (d) => d.value));
 			dataset.push({key: d3.max(dataset, (d) => d.key) + 1, value: newNumber});
-			console.log(dataset);
 
 			xScale.domain(d3.range(dataset.length));
 
@@ -150,7 +148,6 @@ function svgBar(dataset, opts) {
 	d3.select('.svg-bar--removeOne')
 		.on('click', () => {
 			dataset.shift();
-			console.log(dataset);
 
 			xScale.domain(d3.range(dataset.length));
 

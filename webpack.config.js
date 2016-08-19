@@ -26,8 +26,32 @@ module.exports = {
 			{
 				test: /\.scss$/,
 				loader: 'style!css!postcss!sass'
+			},
+			{
+				test: /\.(jpe?g|png|gif|svg)$/i,
+				loaders: [
+					'file?hash=sha512&digest=hex&name=[hash].[ext]',
+					'image-webpack'
+				]
 			}
 		]
+	},
+
+	imageWebpackLoader: {
+		pngquant: {
+			quality: '65-90',
+			speed: 4
+		},
+		svgo: {
+			plugins: [
+				{
+					removeViewBox: false
+				},
+				{
+					removeEmptyAttrs: false
+				}
+			]
+		}
 	},
 
 	postcss: [
@@ -49,4 +73,4 @@ module.exports = {
 		inline: true,
 		hot: true
 	}
-}
+};

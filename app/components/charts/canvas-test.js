@@ -1,6 +1,7 @@
 'use strict';
 
 import _ from '../util';
+import imgRef from '../../assets/index.png';
 
 function canvasTest() {
 	let canvasEl = document.createElement('canvas'),
@@ -30,6 +31,15 @@ function canvasTest() {
 		createIsrael(createCanvas(200, 125));
 		createSomalia(createCanvas(200, 125));
 		createTurkey(createCanvas(200, 125));
+		createPieChart(createCanvas(200, 125));
+		createQuadratic(createCanvas(200, 125));
+		createBezier(createCanvas(200, 125));
+		createHaiti(createCanvas(200, 125));
+		createLinearGradient(createCanvas(200, 125));
+		createFilteredText(createCanvas(200, 125));
+		createPixels(createCanvas(200, 125));
+		createClip(createCanvas(200, 125));
+		createTransform2(createCanvas(200, 125));
 	}
 
 	function doCanvasNotSupported() {
@@ -268,6 +278,282 @@ function canvasTest() {
 
 		r = Math.floor(r * 0.75);
 		createStar(ctx, x + r, y, r / 2.2, r, 5, '#fff', null, 15);
+	}
+
+	function createPieChart(canvas) {
+		let w = canvas.width,
+			h = canvas.height,
+			ctx = canvas.getContext('2d'),
+			x = w/2,
+			y = h/2,
+			r = h/4,
+			rad = Math.PI/180;
+
+		ctx.fillStyle = '#000';
+		ctx.fillRect(0, 0, w, h);
+
+		ctx.beginPath();
+		ctx.fillStyle = '#F3F100';
+		ctx.moveTo(x, y);
+		ctx.arc(x, y, r, 40 * rad, 320 * rad, false);
+		ctx.lineTo(x, y);
+		ctx.closePath();
+		ctx.fill();
+
+		ctx.beginPath();
+		ctx.fillStyle = '#F3F100';
+		ctx.moveTo(x + 10, y);
+		ctx.arc(x + 10, y, r, 40 * rad, 320 * rad, true);
+		ctx.lineTo(x + 10, y);
+		ctx.closePath();
+		ctx.fill();
+	}
+
+	function createQuadratic(canvas) {
+		let w = canvas.width,
+			h = canvas.height,
+			ctx= canvas.getContext('2d'),
+			x = w/2,
+			y = h/2;
+
+		ctx.fillStyle = '#383388';
+		ctx.fillRect(0, 0, w, h);
+
+		ctx.lineWidth = 5;
+		ctx.strokeStyle = '#383388';
+		ctx.fillStyle = '#ffffff';
+
+		ctx.beginPath();
+		ctx.moveTo(0, y);
+		ctx.quadraticCurveTo(x, 0, w, y);
+		ctx.quadraticCurveTo(x, h, 0, y);
+		ctx.closePath();
+		ctx.fill();
+
+		ctx.beginPath();
+		ctx.arc(x, y, x/5, 2 * Math.PI, false);
+		ctx.closePath();
+		ctx.stroke();
+	}
+
+	function createBezier(canvas) {
+		let w = canvas.width,
+			h = canvas.height,
+			ctx = canvas.getContext('2d'),
+			x = w/2,
+			y = h/2;
+
+		ctx.fillStyle = '#a3de00';
+		ctx.fillRect(0, 0, w, h);
+
+		ctx.lineWidth = 5;
+		ctx.strokeStyle = '#a3de00';
+		ctx.fillStyle = '#ffffff';
+
+		ctx.beginPath();
+		ctx.moveTo(0, y);
+		ctx.bezierCurveTo(0, 0, w, 0, w, y);
+		ctx.bezierCurveTo(w, h, 0, h, 0, y);
+		ctx.closePath();
+		ctx.fill();
+
+		ctx.beginPath();
+		ctx.arc(x, y, x/5, 2 * Math.PI, false);
+		ctx.closePath();
+		ctx.stroke();
+	}
+
+	function createHaiti(canvas) {
+		let w = canvas.width,
+			h = canvas.height,
+			ctx = canvas.getContext('2d'),
+			x = w / 2,
+			y = h / 2;
+
+		ctx.fillStyle = '#00209F';
+		ctx.fillRect(0, 0, w, y);
+
+		ctx.fillStyle = '#D21034';
+		ctx.fillRect(0, y, w, y);
+
+		let img = new Image();
+		img.onload = function() {
+			let ratio = this.height / (h/4),
+				iw = this.width / ratio + 10, //img is square
+				ih = this.height / ratio;
+
+			ctx.drawImage(this, x - iw / 2, y - ih / 2, iw, ih);
+		};
+
+		img.src = imgRef;
+	}
+
+	function createLinearGradient(canvas) {
+		let w = canvas.width,
+			h = canvas.height,
+			x = w / 2,
+			y = h / 2,
+			ctx = canvas.getContext('2d'),
+			point1,
+			point2;
+
+		ctx.fillStyle = '#aaaaaa';
+		ctx.fillRect(0, 0, w, h);
+
+		ctx.font = '14px arial';
+		ctx.textAlign = 'center';
+		ctx.textBaseline = 'middle';
+		ctx.fillStyle = '#000';
+		ctx.fillText('Click and drag for gradient', x, y);
+
+		canvas.addEventListener('mousedown', (e) => {
+			ctx.fillRect(0, 0, w, h);
+			point1 = transformPos(canvas, e.clientX, e.clientY);
+		});
+		canvas.addEventListener('mouseup', (e) => {
+			point2 = transformPos(canvas, e.clientX, e.clientY);
+
+			let grad = ctx.createLinearGradient(point1.x, point1.y, point2.x, point2.y);
+			grad.addColorStop(0, '#333933');
+			grad.addColorStop(1, '#339333');
+
+			ctx.fillStyle = grad;
+			ctx.fillRect(0, 0, w, h);
+		});
+	}
+
+	function createFilteredText(canvas) {
+		let w = canvas.width,
+			h = canvas.height,
+			x = w / 2,
+			y = h / 2,
+			ctx = canvas.getContext('2d'),
+			text = 'hello canvas',
+			size = 48,
+			tbox;
+
+		do {
+			ctx.font = size-- + 'px arial';
+			tbox = ctx.measureText(text);
+		} while(tbox.width > w * 0.9);
+
+		ctx.textAlign = 'center';
+		ctx.textBaseline = 'middle';
+		ctx.strokeText(text, x, y);
+		ctx.fillText(text, x - 2, y - 2);
+	}
+
+	function createPixels(canvas) {
+		let w = canvas.width,
+			h = canvas.height,
+			ctx = canvas.getContext('2d');
+
+		let img = new Image();
+		img.onload = function() {
+			ctx.drawImage(this, 0, 0, w, h);
+
+			let imageData = ctx.getImageData(0, 0, w/2, h),
+				pixelData = imageData.data;
+
+			pixelData.forEach((el, i, arr) => {
+				if(i % 4 !== 0) {
+					arr[i] = 255 - el;
+				}
+			});
+			ctx.putImageData(imageData, 0, 0);
+		};
+
+		img.src = imgRef;
+	}
+
+	function createClip(canvas) {
+		let w = canvas.width,
+			h = canvas.height,
+			ctx = canvas.getContext('2d'),
+			size = 20,
+			iw = Math.ceil(w / size),
+			ih = Math.ceil(h / size);
+
+		ctx.fillStyle = '#aaa';
+		ctx.fillRect(0,0,w,h);
+
+		ctx.save(); // save the context state before clipping
+		ctx.transform(1.2, 0.2, 0.2, 1.3, -30, 0); //hscale, hskew, vskew, vscale, hmove, vmove
+
+		fillTriangle(ctx, 0, 0, w, h/2, 0, h, '#ff00aa');
+		ctx.clip(); // clip using the existent shape - triangle
+
+		ctx.beginPath();
+		ctx.fillStyle = '#000';
+		generatePattern(ctx, iw, ih, size, 0);
+		ctx.closePath();
+		ctx.fill();
+
+		ctx.restore(); // restore the context state after clipping the black area and draw everywhere
+
+		ctx.beginPath();
+		ctx.fillStyle = '#fff';
+		generatePattern(ctx, iw, ih, size, 1);
+		ctx.closePath();
+		ctx.fill();
+	}
+
+	function createTransform2(canvas) {
+		let w = canvas.width,
+			h = canvas.height,
+			x = w/2,
+			y = h/2,
+			ctx = canvas.getContext('2d'),
+			rad = Math.PI/180;
+
+		ctx.fillStyle = '#aaa';
+		ctx.fillRect(0, 0, w, h);
+
+		ctx.save();
+
+		ctx.font = 'bold 60px arial';
+		ctx.textAlign = 'center';
+		ctx.textBaseline = 'middle';
+		ctx.fillStyle = '#000';
+
+		ctx.translate(x, y); // moves the origin of the canvas
+		ctx.fillText('Fin.', 0, 0);
+
+		ctx.scale(.9, .9);
+		ctx.rotate(rad * 5);
+		ctx.fillStyle = '#ff0000';
+		ctx.fillText('Fin.', 0, 0);
+
+		ctx.scale(.9, .9);
+		ctx.rotate(rad * 5);
+		ctx.fillStyle = '#00ff00';
+		ctx.fillText('Fin.', 0, 0);
+
+		ctx.scale(.9, .9);
+		ctx.rotate(rad * 5);
+		ctx.fillStyle = '#0000ff';
+		ctx.fillText('Fin.', 0, 0);
+
+		ctx.restore();
+		ctx.font = '20px arial';
+		ctx.fillStyle = '#000';
+		ctx.fillText('Boom', x, y + 40);
+	}
+
+	function generatePattern(ctx, w, h, size, offset) {
+		for(let i = 0; i < w; i += 2) {
+			for(let j = 0; j < h; j++) {
+				ctx.rect((i + (j + offset) % 2) * size, j * size, size, size); //doesn't draw until calling context.fill()
+			}
+		}
+	}
+
+	function transformPos(canvas, clientX, clientY) { // returns the position relative to the canvas origin
+		let rect = canvas.getBoundingClientRect();
+		return {
+			x: Math.round(clientX - rect.left),
+			y: Math.round(clientY - rect.top)
+		};
 	}
 
 	function fillTriangle(ctx, x1, y1, x2, y2, x3, y3, color) {
